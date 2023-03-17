@@ -1,0 +1,61 @@
+C51 COMPILER V9.60.0.0   DELAY                                                             06/17/2022 15:00:09 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DELAY
+OBJECT MODULE PLACED IN .\Objects\delay.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE delay.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\del
+                    -ay.lst) TABS(2) OBJECT(.\Objects\delay.obj)
+
+line level    source
+
+   1          #include "delay.h"
+   2          /*------------------------------------------------
+   3           uS延时函数，含有输入参数 unsigned char t，无返回值
+   4           unsigned char 是定义无符号字符变量，其值的范围是
+   5           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+   6           长度如下 T=tx2+5 uS
+   7          ------------------------------------------------*/
+   8          void DelayUs2x(unsigned char t)
+   9          {
+  10   1        while(--t);
+  11   1        while(--t);
+  12   1        while(--t);
+  13   1        while(--t);
+  14   1        while(--t);
+  15   1        while(--t);
+  16   1        while(--t);
+  17   1        while(--t);
+  18   1        while(--t);
+  19   1        while(--t);
+  20   1        while(--t);
+  21   1        while(--t);
+  22   1      }
+  23          /*------------------------------------------------
+  24           mS延时函数，含有输入参数 unsigned char t，无返回值
+  25           unsigned char 是定义无符号字符变量，其值的范围是
+  26           0~255 这里使用晶振12M，精确延时请使用汇编
+  27          ------------------------------------------------*/
+  28          void DelayMs(unsigned char t)
+  29          {
+  30   1      
+  31   1        while(t--)
+  32   1        {
+  33   2          //大致延时1mS
+  34   2          DelayUs2x(245);
+  35   2          DelayUs2x(245);
+  36   2        }
+  37   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     46    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

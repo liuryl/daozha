@@ -1,0 +1,128 @@
+C51 COMPILER V9.60.0.0   WIFI                                                              06/17/2022 15:00:09 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE WIFI
+OBJECT MODULE PLACED IN .\Objects\Wifi.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Wifi.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\Wifi
+                    -.lst) TABS(2) OBJECT(.\Objects\Wifi.obj)
+
+line level    source
+
+   1          #include <REGX51.H>
+   2          #include "Uart.h"
+   3          #include "Wifi.h"
+   4          #include "delay.h"
+   5          code char *Exit = "+++";
+   6          code char *client = "AT+CWMODE=1\r\n";
+   7          code char *RST = "AT+RST\r\n";
+   8          code char *link = "AT+CWJAP=\"liuryl\",\"123321123\"\r\n";
+   9          code char *configSerer = "AT+CIPSTART=\"TCP\",\"a1rTZKqoE4e.iot-as-mqtt.cn-shanghai.aliyuncs.com\",1883\r\
+             -n";
+  10          code char *Transparent_mode = "AT+CIPMODE=1\r\n";
+  11          code char *Transparent_Stat = "AT+CIPSEND\r\n";
+  12          
+  13          void Init_WIFI(void){
+  14   1        
+  15   1        count = 1;
+  16   1        
+  17   1          Send_Str(Exit,3);
+  18   1          DelayMs(255);
+  19   1          DelayMs(255);
+  20   1          DelayMs(255);
+  21   1        
+  22   1      
+  23   1        
+  24   1        do{
+  25   2          count = 1;
+  26   2          Send_Str(client,15);
+  27   2          DelayMs(255);
+  28   2          DelayMs(255);
+  29   2          DelayMs(255);
+  30   2          DelayMs(255);
+  31   2        }while(buffers[count - 4] != 'O'  || buffers[count-3] != 'K' && buffers[count-2] != 0x0D || buffers[count
+             --1] != 0x0A); 
+  32   1        
+  33   1        
+  34   1        do{
+  35   2          count = 1;
+  36   2          Send_Str(RST,10);
+  37   2          DelayMs(255);
+  38   2          DelayMs(255);
+  39   2          DelayMs(255);
+  40   2          DelayMs(255);
+  41   2        }while(buffers[count - 4] != 0x64  || buffers[count-3] != 0x79 || buffers[count-2] != 0x0D || buffers[cou
+             -nt-1] != 0x0A); 
+  42   1        
+  43   1        
+  44   1        do{
+  45   2          count = 1;
+  46   2          Send_Str(link,38);
+  47   2          DelayMs(255);
+  48   2          DelayMs(255);
+  49   2          DelayMs(255);
+  50   2          DelayMs(255);
+  51   2          DelayMs(255);
+C51 COMPILER V9.60.0.0   WIFI                                                              06/17/2022 15:00:09 PAGE 2   
+
+  52   2          DelayMs(255);
+  53   2          DelayMs(255);
+  54   2          DelayMs(255);
+  55   2          DelayMs(255);
+  56   2          DelayMs(255);
+  57   2          DelayMs(255);
+  58   2          DelayMs(255);
+  59   2        }while(buffers[count - 4] != 'O'  || buffers[count-3] != 'K' && buffers[count-2] != 0x0D || buffers[count
+             --1] != 0x0A); 
+  60   1        
+  61   1        
+  62   1        do{
+  63   2          count = 1;
+  64   2          Send_Str(configSerer,77);
+  65   2          DelayMs(255);
+  66   2          DelayMs(255);
+  67   2          DelayMs(255);
+  68   2          DelayMs(255);
+  69   2        }while(buffers[count - 4] != 'O'  || buffers[count-3] != 'K' && buffers[count-2] != 0x0D || buffers[count
+             --1] != 0x0A); 
+  70   1      
+  71   1      
+  72   1        
+  73   1        do{
+  74   2          count = 1;
+  75   2          Send_Str(Transparent_mode,16);
+  76   2          DelayMs(255);
+  77   2          DelayMs(255);
+  78   2          DelayMs(255);
+  79   2          DelayMs(255);
+  80   2        }while(buffers[count - 4] != 'O'  || buffers[count-3] != 'K' && buffers[count-2] != 0x0D || buffers[count
+             --1] != 0x0A); 
+  81   1      
+  82   1      
+  83   1        
+  84   1        do{
+  85   2          count = 1;
+  86   2          Send_Str(Transparent_Stat,14);
+  87   2          DelayMs(255);
+  88   2          DelayMs(255);
+  89   2          DelayMs(255);
+  90   2          DelayMs(255);
+  91   2        }while(buffers[count-3] != 0x0D || buffers[count-2] != 0x0A || buffers[count-1] != 0x3E); 
+  92   1      
+  93   1        
+  94   1      }
+  95          
+  96          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    556    ----
+   CONSTANT SIZE    =    184    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

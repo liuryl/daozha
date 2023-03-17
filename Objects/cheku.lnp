@@ -1,0 +1,9 @@
+".\Objects\main.obj",
+".\Objects\Uart.obj",
+".\Objects\Wifi.obj",
+".\Objects\MQTT.obj",
+".\Objects\delay.obj",
+".\Objects\distance.obj",
+".\Objects\motor.obj" 
+TO ".\Objects\cheku" 
+PRINT(".\Listings\cheku.m51")

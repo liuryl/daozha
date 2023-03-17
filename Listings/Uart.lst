@@ -1,0 +1,94 @@
+C51 COMPILER V9.60.0.0   UART                                                              06/17/2022 15:00:09 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN .\Objects\Uart.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Uart.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\Uart
+                    -.lst) TABS(2) OBJECT(.\Objects\Uart.obj)
+
+line level    source
+
+   1          
+   2          #include "Uart.h"
+   3          #include <REGX51.H>
+   4          #include "motor.h"
+   5          unsigned char count = 0;
+   6          unsigned  char  buffers[80];
+   7          unsigned char gate = 0;
+   8          
+   9          
+  10          // 描述: 串口初始化程序.
+  11          void UartInit(void)   //9600bps@11.0592MHz
+  12          {
+  13   1        PCON &= 0x7F; 
+  14   1        SCON = 0x50;    
+  15   1        TMOD &= 0x0F; 
+  16   1        TMOD |= 0x20; 
+  17   1        TL1 = 0xFD;   
+  18   1        TH1 = 0xFD;   
+  19   1        ET1 = 0;    
+  20   1        TR1 = 1;
+  21   1        ES = 1;
+  22   1        EA = 1;
+  23   1      }
+  24          //COM1发送一个字节
+  25          void Send_Data(unsigned char dat)
+  26          {
+  27   1        SBUF = dat;
+  28   1        while(!TI);
+  29   1        TI = 0;
+  30   1        
+  31   1      }
+  32          //COM1发送一个字符串
+  33          void Send_Str(unsigned char *s, unsigned char length)
+  34          {
+  35   1        while(length){
+  36   2          Send_Data(*s++);
+  37   2          length--;
+  38   2        }
+  39   1      }
+  40          
+  41          unsigned char gate_gate(void){
+  42   1        if(gate){
+  43   2          gate = 0;
+  44   2          return 1;
+  45   2        }
+  46   1        return 0;
+  47   1      }
+  48          
+  49          //串口1中断处理程序
+  50          void INT_Uart1(void) interrupt 4
+  51          {
+  52   1        if(RI)
+  53   1        {
+  54   2          RI = 0;//清空读中断标志位
+C51 COMPILER V9.60.0.0   UART                                                              06/17/2022 15:00:09 PAGE 2   
+
+  55   2          buffers[count] = SBUF;
+  56   2          if(buffers[count] == '}' &&   buffers[count - 1]  == '1' && buffers[count - 2]  == ':' && buffers[count - 3
+             -]  == '"' && buffers[count - 4] == 'e' && buffers[count- 5] == 't'){
+  57   3            P0_0 = 1;
+  58   3            gate = 1;
+  59   3          }
+  60   2          count++;
+  61   2          count %=80;
+  62   2        }
+  63   1      }
+  64          
+  65          
+  66          
+  67          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    187    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     82       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

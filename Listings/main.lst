@@ -1,0 +1,141 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              06/17/2022 15:00:09 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX51.H>
+   2          #include "Uart.h"
+   3          #include "Wifi.h"
+   4          #include "MQTT.h"
+   5          #include "delay.h"
+   6          #include "distance.h"      
+   7          #include "motor.h"
+   8          char Link_status = 0;
+   9          unsigned int timp ;
+  10          char flag = 3;
+  11          char flag2 = 3;
+  12          char count2 = 3;
+  13          unsigned int heart = 0;
+  14          char up = 0;
+  15          
+  16          void main(void){
+  17   1        UartInit(); //9600bps@11.0592MHz
+  18   1        init_distance();
+  19   1        P0_0 = 0;
+  20   1                DataPro(1450);
+  21   1                DelayMs(255); 
+  22   1                DelayMs(255); 
+  23   1                DelayMs(255); 
+  24   1                DelayMs(255); 
+  25   1                DelayMs(255); 
+  26   1                DataPro(500);
+  27   1                DelayMs(255); 
+  28   1                DelayMs(255); 
+  29   1                DelayMs(255); 
+  30   1                DelayMs(255); 
+  31   1                DelayMs(255); 
+  32   1                DataPro(1450);
+  33   1                DelayMs(255); 
+  34   1                DelayMs(255); 
+  35   1                DelayMs(255); 
+  36   1                DelayMs(255); 
+  37   1                DelayMs(255); 
+  38   1        while(1){
+  39   2          
+  40   2          if(Link_status){
+  41   3            if(Link_status == 1){
+  42   4              Link_status = Init_MQTT();
+  43   4            }   
+  44   3            if(Link_status == 2){
+  45   4              
+  46   4              count2 = 3;
+  47   4              flag = 3;
+  48   4              while(count2){
+  49   5                DelayMs(50);
+  50   5                timp = Conut();
+  51   5                if(timp > 35){
+  52   6                  flag ++;          
+  53   6                }
+  54   5                else{
+C51 COMPILER V9.60.0.0   MAIN                                                              06/17/2022 15:00:09 PAGE 2   
+
+  55   6                  flag --;
+  56   6                }
+  57   5                count2--;
+  58   5              }
+  59   4              
+  60   4              flag = (flag > 3) ? 0 : 1;
+  61   4      //            MQTT_Publish_off();
+  62   4              
+  63   4              // distance2
+  64   4              count2 = 3;
+  65   4              flag2 = 3;
+  66   4              while(count2){
+  67   5                DelayMs(50);
+  68   5                timp = Conut2();
+  69   5                if(timp > 35){
+  70   6                  flag2 ++;         
+  71   6                }
+  72   5                else{
+  73   6                  flag2 --;
+  74   6                }
+  75   5                count2--;
+  76   5              }
+  77   4              
+  78   4              flag2 = (flag2 > 3) ? 0 : 1;
+  79   4              
+  80   4              heart++;
+  81   4              if(heart>100){
+  82   5                
+  83   5                MQTT_Heart_send();
+  84   5                heart= 0;
+  85   5              }
+  86   4              if(flag == 1){    
+  87   5                if(heart%20==0){
+  88   6                  MQTT_Publish_off();
+  89   6                }                 
+  90   5              }
+  91   4              
+  92   4              if(gate_gate()){
+  93   5                DataPro(500);
+  94   5                up = 1;
+  95   5              }
+  96   4              else{
+  97   5                if(up == 1 && flag == 0 && flag2 == 0)
+  98   5                {
+  99   6                  DataPro(1500);
+ 100   6                  up = 0;
+ 101   6                  P0_0 = 0;
+ 102   6                }
+ 103   5              }
+ 104   4      
+ 105   4            }
+ 106   3          }else{      
+ 107   3            Init_WIFI();//…Ë÷√WIFI
+ 108   3            Link_status = 1;
+ 109   3            
+ 110   3          }
+ 111   2        }
+ 112   1      }
+ 113          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+C51 COMPILER V9.60.0.0   MAIN                                                              06/17/2022 15:00:09 PAGE 3   
+
+   CODE SIZE        =    406    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,81 @@
+C51 COMPILER V9.60.0.0   DISTANCE                                                          06/17/2022 15:00:09 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DISTANCE
+OBJECT MODULE PLACED IN .\Objects\distance.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE distance.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\
+                    -distance.lst) TABS(2) OBJECT(.\Objects\distance.obj)
+
+line level    source
+
+   1          #include <REGX51.H>
+   2          #include "delay.h"
+   3          #define  ECHO  P1_6          //超声波接口定义
+   4          #define  TRIG  P1_5          //超声波接口定义
+   5          #define  ECHO2 P2_6          //超声波接口定义
+   6          #define  TRIG2 P2_5          //超声波接口定义
+   7          
+   8           /***************************************************/
+   9          unsigned int Conut(void)       //计算距离
+  10          {
+  11   1        unsigned int S=0; 
+  12   1          TRIG=1;                     
+  13   1          DelayUs2x(12);
+  14   1          TRIG=0;
+  15   1         while(!ECHO);           //当RX为零时等待
+  16   1          TR0=1;             //开启计数
+  17   1         while(ECHO);        //当RX为1计数并等待
+  18   1          TR0=0;           //关闭计数
+  19   1          S=TH0*256+TL0;       //读取脉宽长度
+  20   1          TH0=0;
+  21   1          TL0=0;
+  22   1          S=S*0.017;        //算出来是CM
+  23   1        return S;
+  24   1      }
+  25          
+  26          unsigned int Conut2(void)      //计算距离
+  27          {
+  28   1        unsigned int S=0; 
+  29   1          TRIG2=1;                      
+  30   1          DelayUs2x(12);
+  31   1          TRIG2=0;
+  32   1         while(!ECHO2);          //当RX为零时等待
+  33   1          TR0=1;             //开启计数
+  34   1         while(ECHO2);         //当RX为1计数并等待
+  35   1          TR0=0;           //关闭计数
+  36   1          S=TH0*256+TL0;       //读取脉宽长度
+  37   1          TH0=0;
+  38   1          TL0=0;
+  39   1          S=S*0.017;        //算出来是CM
+  40   1        return S;
+  41   1      }
+  42          
+  43          
+  44           /***************************************************/
+  45          void init_distance(void){
+  46   1        TMOD &= 0xF0; 
+  47   1        TMOD |= 0x01;
+  48   1        TRIG=0; 
+  49   1        TRIG2=0;  
+  50   1        TH0=0;    
+  51   1        TL0=0;
+  52   1        TR0= 0;
+  53   1      }
+  54          
+C51 COMPILER V9.60.0.0   DISTANCE                                                          06/17/2022 15:00:09 PAGE 2   
+
+  55            
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    160    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
